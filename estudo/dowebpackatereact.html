@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJTF1CE9V2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YJTF1CE9V2');
+</script>
+</head>
+<body>
+    <script type="module">
+    </script><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="../index.html">Polichain</a>
+    </div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div><h1 id="do-webpack-até-o-react">Do Webpack até o React</h1>
+
+<h2 id="por-que-webpack-existe">Por que webpack existe?</h2>
+
+<p>Criar aplicações webs com muitos scripts pode ser complexo. As tags <code class="language-plaintext highlighter-rouge">&lt;scrpt src&gt;</code> não são mais suficientes, essa técnica não escala. Muitas requisições HTTP seriam necessárias e o app ficaria lento.</p>
+
+<p>Por isso, com o <strong>webpack</strong>, cada arquivo <code class="language-plaintext highlighter-rouge">.js</code> torna-se um módulo e o Webpack insere todos os módulos e suas dependências em grande arquivo, esse grande arquivo é conhecido como <strong>bundle</strong>.</p>
+
+<p>Com o webpack também é possível utilizar <strong>ES6</strong> e também <strong>JSX</strong>.</p>
+
+<p>O webpack transpila o código para uma versão que o navegador entenda, para isso, é utilizado um plugin conhecido como <strong>Babel</strong>.</p>
+
+<p>Ainda, para que os arquivos fiquem mais compactos usamos <strong>minify</strong> e também o <strong>uglify</strong>. Então, variáveis com nomes longos serão encurtadas e espaços vazios serão removidos.</p>
+
+<h2 id="meu-primeiro-webpack">Meu primeiro Webpack</h2>
+
+<p>Se você já tentou usar <code class="language-plaintext highlighter-rouge">react</code> possívelmente ja se deparou com inúmeros arquivos. É muito fácil se perder. Ainda mais se ainda não sabe o que o <code class="language-plaintext highlighter-rouge">babel</code> <code class="language-plaintext highlighter-rouge">react</code> fazem e como isso é organizado dentro do diretorio.</p>
+
+<p>Antes de continuar com essas incríveis biblitecas, vamos fazer o projeto mais simples possível.</p>
+
+<p>A primeira coisa que precisamos é do gerenciador de pacotes do Node, o NPM.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir my-first-webpack
+cd my-first-webpack
+npm init -y
+</code></pre></div></div>
+
+<p>Será gerado um arquivo assim:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+    "name": "my-first-webpack",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" &amp;&amp; exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}
+</code></pre></div></div>
+
+<p>Dentre as informações do projeto ( nome, versão e descrição ) o que realmente importa são as dependencias, iremos passar por isso mais tarde.</p>
+
+<p>Em seguida, crie uma pasta <code class="language-plaintext highlighter-rouge">src</code> onde teremos nosso <code class="language-plaintext highlighter-rouge">index.js</code> contendo apenas um <code class="language-plaintext highlighter-rouge">console.log("ola mundo")</code>.Também, instale os pacotes <code class="language-plaintext highlighter-rouge">webpack</code> <code class="language-plaintext highlighter-rouge">webpack-cli</code>. Por fim, adicione o trecho abaixo à configuração. Isso permitirá rodar o script de build, no qual o webpack será utilizado.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"scripts":
+{
+    "build": "webpack --mode development"
+}
+</code></pre></div></div>
+
+<p>Note que o arquivo <code class="language-plaintext highlighter-rouge">package.json</code> já está atualizado com os pacotes instalados.</p>
+
+<p>Finalmente, você pode rodar o comando <code class="language-plaintext highlighter-rouge">node run build</code>. O modo escolhido foi de <code class="language-plaintext highlighter-rouge">development</code>, porém também poderia ser <code class="language-plaintext highlighter-rouge">production</code>, daí o código seria otimizado para performance. O código gerado estará na pasta <code class="language-plaintext highlighter-rouge">/dist</code>. É nessa pasta que está o arquivo javascript a ser <strong>dist</strong>ribuido.</p>
+
+<h2 id="o-tal-do-webpackconfigjs">O tal do webpack.config.js</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>const webpack = require('webpack');
+const path = require('path');
+const config = {
+entry: './src/index.js',
+output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js'
+}
+module.exports = config;
+</code></pre></div></div>
+
+<p>Para o nosso projeto, basta essa configuração.</p>
+
+<p>As 2 primeiras linhas servem para importar os pacotes <strong>webpack</strong> e <strong>path</strong>. <strong>Path</strong> servirá para lidarmos com o caminho dos arquivos.</p>
+
+<p>No arquivo de configuração, temos aquilo que é esperado para a entrada, enquanto para a saida temos a pasta destino e o nome do arquivo. Se quiser, pode rodar o mesmo comando anterior para ver o novo arquivo gerado com o nome atualizado.</p>
+
+<p>Por fim, além do código em javascript podemos também querer empacotar outros arquivos (.png .css). Para isso, usaremos <code class="language-plaintext highlighter-rouge">loaders</code> que irão converter arquivos em módulos válidos.</p>
+
+<p>Aqui, iremos utilizar os seguintes pacotes:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>babel-loader
+@babel/core
+@babel/preset-env
+</code></pre></div></div>
+
+<p><em>Transpiling</em> babel-loader Loads ES2015+ code and transpiles to ES5 using Babel</p>
+
+<p>Agora, para a configuração, <strong>criaremos um novo arquivo</strong> chamado <code class="language-plaintext highlighter-rouge">.babelrc</code> na pasta raiz com o seguinte conteúdo:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+    presets: ['@babel/preset-env']
+}
+</code></pre></div></div>
+
+<p>Isso irá transpilar o código para uma versão onde o navegador entende. Por fim, também mudaremos o arquivo <code class="language-plaintext highlighter-rouge">webpack.config.js</code>.</p>
+
+<p>Para definir uma regra precisamos de duas chaves: <em>test</em> e <em>use</em>. Também queremos excluir a pasta <em>node_modules</em>, pois dentro dela não há arquivos interessantes para o <code class="language-plaintext highlighter-rouge">Babel</code>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>module: {
+    rules:[{
+            test: /\.(js)$/,
+            exclude: /node_modules/,
+            use: 'babel-loader'
+        }]
+}
+</code></pre></div></div>
+
+<p>Para vermos funcionando, mudaremos um pouco o código do <code class="language-plaintext highlighter-rouge">index.js</code> e por fim usaremos o comando <code class="language-plaintext highlighter-rouge">npm run build</code> novamente.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>const hello = () =&gt; {
+    console.log("hello world!");
+} hello()
+</code></pre></div></div>
+
+<p>Assim, você consegue ver como o resultado. Dois códigos que fazem a mesma função escritos de maneiras diferentes. Uma delas é aquela entendida pelo navegador.</p>
+
+<h2 id="criando-uma-aplicação-em-react">Criando uma aplicação em react</h2>
+
+<p>Instale o pacote <code class="language-plaintext highlighter-rouge">react react-dom</code></p>
+
+<p>Insira o trecho de código abaixo no <code class="language-plaintext highlighter-rouge">index.js</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import React from "react";
+import ReactDOM from "react-dom";
+
+class App extends React.Component {
+render(){
+    return &lt;div&gt; Ola Mundo! {this.props.name}&lt;/div&gt;
+}
+}
+
+var mountNode = document.getElementById("app");
+ReactDOM.render(&lt;App name="Analise Real"/&gt;, mountNode);
+</code></pre></div></div>
+
+<p>Em sequencia, adicione o arquivo <code class="language-plaintext highlighter-rouge">index.html</code> à pasta <code class="language-plaintext highlighter-rouge">dist/</code> ( note que é a mesma pasta da saída do javascprit pós transpilação)</p>
+
+<p>Em sequencia, vamos configurar o <code class="language-plaintext highlighter-rouge">Babel</code> para transpilar JSX ( React ). Por isso iremos adicionar ao arquivo <code class="language-plaintext highlighter-rouge">.babelrc</code> o seguinte:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+    presets: [
+        '@babel/preset-env',
+        '@babel/preset-react'
+    ]
+}
+</code></pre></div></div>
+
+<p>Agora o Babel entende .jsx.</p>
+
+<p>Além disso, precisamos alterar o regex que cuida das extensões dos arquivos, já que agora teremos arquivos <code class="language-plaintext highlighter-rouge">.jsx</code>. Isso fica no arquivo <code class="language-plaintext highlighter-rouge">webpack.config.js</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test: /\.(js|jsx)$/,
+</code></pre></div></div>
+
+<p>O webpack cuida disso automaticamente para .js, porém também teremos que inserir o seguinte código:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>resolve: {
+    extensions: [
+    '.js',
+    '.jsx'
+    ]
+}
+</code></pre></div></div>
+
+<p>Por fim, para ver o resultado basta acessar a pasta <code class="language-plaintext highlighter-rouge">dist</code> onde teremos o arquivo de saída, daí basta editar o código html (e ironicamente usar a tag de scripts que tanto criticamos).</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;React starter app&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id="app"&gt;&lt;/div&gt;
+        &lt;script src="bundle.js"&gt;&lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div></div>
+
+<p>É possível ver o texto no console, conforme o esperado.</p>
+</div>
+      </div>
+    </main><footer class="site-footer h-card">
+    <data class="u-url" href="/"></data>
+  
+    <div class="wrapper">
+  
+      <div class="footer-col-wrapper">
+        <div class="footer-col">
+          <ul class="contact-list">
+            <div>Para entrar em contato</div>  
+            <li><a class="u-email" href="../cdn-cgi/l/email-protection.html#6e011a0f1807012e1e0102070d060f070040161714"><span class="__cf_email__" data-cfemail="9ff0ebfee9f6f0dfeff0f3f6fcf7fef6f1b1e7e6e5">[email&#160;protected]</span></a></li>
+          </ul>
+        </div>
+        <div class="footer-col"><ul class="horizontal-links">
+    <div>
+        Também nos encontre em:
+    </div>
+    <li><a href="https://github.com/polichain" target="_blank" >github</a></li>
+    <li><a href="https://instagram.com/polichain.xyz" target="_blank" >instagram</a></li>
+    <li><a href="https://www.linkedin.com/company/polichainusp" target="_blank" >linkedin</a></li>
+    <li><a href="https://twitter.com/polichainxyz" target="_blank" >twitter</a></li>
+</ul></div>
+        <div class="footer-col">
+          <p>Nós somos o grupo de estudos de blockchain da EP-USP</p>
+        </div>
+      </div>
+    </div>
+  
+  </footer><script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+
+</html>

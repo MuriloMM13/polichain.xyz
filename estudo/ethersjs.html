@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJTF1CE9V2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YJTF1CE9V2');
+</script>
+</head>
+<body>
+    <script type="module">
+    </script><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="../index.html">Polichain</a>
+    </div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div><h1 id="ethers-js-101">Ethers js 1.01</h1>
+
+<h1 id="conectando-a-blockchain-com-ethers">Conectando a Blockchain com Ethers</h1>
+
+<p>Essa página foi completa ou parcialmente produzida através da documentação oficial do ethers. Ou seja, leia a documentação!</p>
+
+<h2 id="o-início-de-tudo">O início de tudo</h2>
+
+<p><code class="language-plaintext highlighter-rouge">npm create vite</code></p>
+
+<p>Aqui, usaremos react e Javascript</p>
+
+<p>Pronto! Temos nosso front quase pronto. Para rodarmos o servidor basta instalarmos as dependencias do <code class="language-plaintext highlighter-rouge">npm</code> e em sequencia rodá-lo.</p>
+
+<p><code class="language-plaintext highlighter-rouge">cd &lt;nome-do-projeto&gt;</code> <code class="language-plaintext highlighter-rouge">npm install</code> <code class="language-plaintext highlighter-rouge">npm run dev</code></p>
+
+<p>E pronto! Agora temos o nosso site rodando e pronto para você editar. Aqui, não abordaremos a estrutura básica do react. Por isso, consideramos que você já sabe.</p>
+
+<h1 id="o-be-a-bá-do-ethers">O be-a-bá do ethers</h1>
+
+<h2 id="provider">Provider</h2>
+
+<p>Um <code class="language-plaintext highlighter-rouge">provider</code> é uma conexão de apenas leitura com a blockchain. Permite a consulta de estados em contas, blocos e transações.</p>
+
+<h2 id="signer">Signer</h2>
+
+<p>Engloba todas as operações que interagem com uma conta. Para uma conta teremos uma chave privada, armazenada em algum lugar, utilizada para assinar algo (de maneira genérica, realmente pode ser qualquer coisa).</p>
+
+<p>A chave privada pode estar localizada na memória, utilizando uma <code class="language-plaintext highlighter-rouge">Wallet</code>, ou pode estar localizado em uma camada IPC ( como Metamask )</p>
+
+<h3 id="transactions">Transactions</h3>
+
+<p>Para mudar qualquer estado da blockchain precisamos fazer uma transação. Para fazer essa transação devemos pagar uma taxa. Caso a transação seja revertida, ainda assim, a taxa deve ser paga.</p>
+
+<p>As transações podem ser:</p>
+
+<ul>
+  <li>
+    <p>Enviar ether</p>
+  </li>
+  <li>
+    <p>Deploy de um contrato inteligente</p>
+  </li>
+  <li>
+    <p>Mudar o estado de um contrato</p>
+  </li>
+</ul>
+
+<h2 id="contract">Contract</h2>
+
+<p>É um programa que está rodando na blockchain. Fica localizado na <code class="language-plaintext highlighter-rouge">mempool</code> até ser validado.</p>
+
+<h2 id="receipt">Receipt</h2>
+
+<p>Quando uma transação é enviada, ela fica na <code class="language-plaintext highlighter-rouge">mempool</code> esperando o validador incluí-la. Após ser incluída o <code class="language-plaintext highlighter-rouge">Receipt</code> ficara disponível com os detalhes da transação.</p>
+
+<h1 id="finalmente-como-conectar">Finalmente, como conectar</h1>
+
+<p>Agora, que sabemos como a bliblioteca funcionar, precisamos inclui-la no <code class="language-plaintext highlighter-rouge">node</code>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">npm install --save ethers</code></p>
+
+<p>Agora, para o código, precisaremos de algum <code class="language-plaintext highlighter-rouge">Provider</code>, essas são as maneiras de conseguir.</p>
+
+<h2 id="metamask-and-other-injected-providers">MetaMask (and other injected providers)</h2>
+
+<p>Aqui, o Metamask será injetado no objeto <code class="language-plaintext highlighter-rouge">window</code> provendo o seguinte: - Acesso de apenas leitura à rede Ethereum (<code class="language-plaintext highlighter-rouge">Provider</code>) - Escrita autenticada na blockchain (<code class="language-plaintext highlighter-rouge">Signer</code>)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let signer = null;
+
+let provider;
+if (window.ethereum == null) {
+    console.log("MetaMask not installed; using read-only defaults")
+    provider = ethers.getDefaultProvider()
+
+} else {
+    provider = new ethers.BrowserProvider(window.ethereum)
+    signer = await provider.getSigner();
+}
+</code></pre></div></div>
+
+<h2 id="custom-rpc-backend">Custom RPC Backend</h2>
+
+<p>Use <code class="language-plaintext highlighter-rouge">JsonRpcProvider</code> para os casos abaixo:</p>
+
+<ul>
+  <li>
+    <p>Rodando meu própio nó de Ethereum (<code class="language-plaintext highlighter-rouge">Geth</code>)</p>
+  </li>
+  <li>
+    <p>Usando nó de terceiros</p>
+  </li>
+</ul>
+
+<p>Caso esteja rodando um nó de desenvolvimento (<code class="language-plaintext highlighter-rouge">Hardhat</code>, <code class="language-plaintext highlighter-rouge">Ganache</code>) utilize <code class="language-plaintext highlighter-rouge">JsonRpcProvider-getSigner</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// If no %%url%% is provided, it connects to the default
+// http://localhost:8545, which most nodes use.
+provider = new ethers.JsonRpcProvider(url)
+
+// Get write access as an account by getting the signer
+signer = await provider.getSigner()
+</code></pre></div></div>
+
+<h1 id="agora-tudo-junto">Agora tudo junto</h1>
+
+<p>O código completo pode ser acessado nesse repositório:</p>
+
+<p>https://github.com/otaviootavio/react-metamask-tutorial</p>
+
+<p>Porém, caso decida fazer o código completo é necessário passar pelos seguintes passos:</p>
+
+<ol>
+  <li>Verificar se o usuário possui Metamask</li>
+  <li>Verficar se está conectado
+    <ol>
+      <li>Se sim, ok! Siga adiante, é legal como exercício mostrar dados <em>dummy</em> como saldo, numero do bloco etc<em>.</em></li>
+      <li>Se não, coloque o botão para conectar.</li>
+    </ol>
+  </li>
+</ol>
+
+<p>Entenda “conectar à Metamask” como “aquirir um Signer e um Provider”. Lembre também que para coletar dados externos é necessário usar funções assíncronas.</p>
+</div>
+      </div>
+    </main><footer class="site-footer h-card">
+    <data class="u-url" href="/"></data>
+  
+    <div class="wrapper">
+  
+      <div class="footer-col-wrapper">
+        <div class="footer-col">
+          <ul class="contact-list">
+            <div>Para entrar em contato</div>  
+            <li><a class="u-email" href="../cdn-cgi/l/email-protection.html#f09f849186999fb0809f9c99939891999ede88898a"><span class="__cf_email__" data-cfemail="bdd2c9dccbd4d2fdcdd2d1d4ded5dcd4d393c5c4c7">[email&#160;protected]</span></a></li>
+          </ul>
+        </div>
+        <div class="footer-col"><ul class="horizontal-links">
+    <div>
+        Também nos encontre em:
+    </div>
+    <li><a href="https://github.com/polichain" target="_blank" >github</a></li>
+    <li><a href="https://instagram.com/polichain.xyz" target="_blank" >instagram</a></li>
+    <li><a href="https://www.linkedin.com/company/polichainusp" target="_blank" >linkedin</a></li>
+    <li><a href="https://twitter.com/polichainxyz" target="_blank" >twitter</a></li>
+</ul></div>
+        <div class="footer-col">
+          <p>Nós somos o grupo de estudos de blockchain da EP-USP</p>
+        </div>
+      </div>
+    </div>
+  
+  </footer><script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+
+</html>

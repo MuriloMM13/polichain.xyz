@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: white; /* Cor de fundo aplicada ao body */
+    }
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    form {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+    form h1 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #333;
+      text-align: center;
+    }
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    footer {
+      border-top: 1px solid #ccc;
+      padding: 20px;
+      color: #333;
+    }
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .footer-col {
+      flex: 1;
+      min-width: 200px;
+    }
+    .footer-col div,
+    .footer-col a,
+    .footer-col p {
+      margin-bottom: 10px;
+    }
+    footer a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrapper">
+      <a class="site-title" rel="author" href="index.html">Polichain</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Formulário simplificado para redirecionamento -->
+    <form onsubmit="return redirectToSuccess()">
+      <h1>Login</h1>
+      <input type="text" name="email" placeholder="Digite seu e-mail" required>
+      <input type="password" name="senha" placeholder="Digite sua senha" required>
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
+
+  <footer class="site-footer h-card">
+    <data class="u-url" href="/"></data>
+    <div class="wrapper">
+      <div class="footer-col-wrapper">
+        <div class="footer-col">
+          <ul class="contact-list">
+            <div>Para entrar em contato:</div>  
+            <a href="mailto:polichain@usp.br">otavio@polichain.xyz</a>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <ul class="horizontal-links">
+            <div>Também nos encontre em:</div>
+            <li><a href="https://github.com/polichain" target="_blank">github</a></li>
+            <li><a href="https://instagram.com/polichain.xyz" target="_blank">instagram</a></li>
+            <li><a href="https://www.linkedin.com/company/polichainusp" target="_blank">linkedin</a></li>
+            <li><a href="https://twitter.com/polichainxyz" target="_blank">twitter</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <p>Nós somos o grupo de estudos de blockchain da EP-USP</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Função para redirecionar para a página de sucesso
+    function redirectToSuccess() {
+      window.location.href = "success.html"; // Redireciona para success.html
+      return false; // Impede o envio do formulário
+    }
+  </script>
+</body>
+</html>
+
